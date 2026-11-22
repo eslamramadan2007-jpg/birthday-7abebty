@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>For My Favorite Person ❤️</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display, Great Vibes, Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --font-script: 'Great Vibes', cursive;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --midnight: #140812;
+            --velvet: #270d1f;
+            --rose-gold: #e899a6;
+            --champagne: #f7e1d7;
+            --gold: #d4af37;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: radial-gradient(ellipse at top, #2d0e22 0%, #160712 55%, #0c0309 100%);
+            color: var(--champagne);
+            min-height: 100dvh;
+            min-height: -webkit-fill-available;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .font-script {
+            font-family: var(--font-script);
+        }
+
+        .font-serif-display {
+            font-family: var(--font-serif);
+        }
+
+        /* Background & Effects Canvases */
+        #bg-canvas, #fx-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        #bg-canvas { z-index: 1; }
+        #fx-canvas { z-index: 60; }
+
+        /* Stage 1: Beating 3D Heart Lock */
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 22px rgba(244, 63, 94, 0.55)); }
+            15% { transform: scale(1.13); filter: drop-shadow(0 0 38px rgba(244, 63, 94, 0.85)); }
+            30% { transform: scale(1.03); }
+            45% { transform: scale(1.16); filter: drop-shadow(0 0 42px rgba(212, 175, 55, 0.75)); }
+            70% { transform: scale(1); }
+        }
+
+        .heart-beat-anim {
+            animation: heartBeat 1.8s infinite ease-in-out;
+        }
+
+        .heart-holding {
+            transform: scale(1.25) !important;
+            filter: drop-shadow(0 0 55px rgba(251, 113, 133, 1)) !important;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        @keyframes pulseRipple {
+            0% { transform: scale(0.85); opacity: 0.75; }
+            100% { transform: scale(1.55); opacity: 0; }
+        }
+
+        .heart-ripple {
+            animation: pulseRipple 2s infinite cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Circular Progress Ring around Heart */
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.08s linear;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        /* Stage 2: 3D Envelope & Wax Seal */
+        .envelope-perspective {
+            perspective: 1400px;
+        }
+
+        .envelope-3d {
+            position: relative;
+            width: 320px;
+            height: 215px;
+            background: linear-gradient(145deg, #4a1535 0%, #2b0b1f 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 35px rgba(225, 29, 72, 0.25);
+            cursor: pointer;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @media (min-width: 640px) {
+            .envelope-3d {
+                width: 420px;
+                height: 275px;
+            }
+        }
+
+        .envelope-3d:hover {
+            transform: translateY(-6px) scale(1.02);
+        }
+
+        .env-flap {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, #5e1b43 0%, #3a0f29 100%);
+            clip-path: polygon(0 0, 50% 58%, 100% 0);
+            border-radius: 16px 16px 0 0;
+            transform-origin: top center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.3s;
+            z-index: 4;
+            border-top: 1px solid rgba(212, 175, 55, 0.5);
+        }
+
+        .env-left {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #3c102b 0%, #4d1638 100%);
+            clip-path: polygon(0 0, 51% 52%, 0 100%);
+            border-radius: 16px;
+            z-index: 3;
+        }
+
+        .env-right {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(270deg, #3c102b 0%, #4d1638 100%);
+            clip-path: polygon(100% 0, 49% 52%, 100% 100%);
+            border-radius: 16px;
+            z-index: 3;
+        }
+
+        .env-bottom {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, #2b0b1f 0%, #461332 100%);
+            clip-path: polygon(0 100%, 50% 46%, 100% 100%);
+            border-radius: 16px;
+            z-index: 3;
+        }
+
+        .letter-peek {
+            position: absolute;
+            left: 7%;
+            right: 7%;
+            bottom: 12px;
+            height: 82%;
+            background: linear-gradient(180deg, #fffaf5 0%, #f7e6dc 100%);
+            border-radius: 10px;
+            z-index: 2;
+            transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 18px;
+            color: #4a1535;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+        }
+
+        .envelope-3d.opened .env-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-3d.opened .wax-seal-btn {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.3) rotate(45deg);
+            pointer-events: none;
+        }
+
+        .envelope-3d.opened .letter-peek {
+            transform: translateY(-95px);
+        }
+
+        .wax-seal-btn {
+            position: absolute;
+            top: 53%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fff0b3, #d4af37 55%, #8c6914 100%);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.75);
+            border: 2px solid #f7e199;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+        }
+
+        /* Luxury Glass & Champagne Card */
+        .luxury-card {
+            background: linear-gradient(165deg, rgba(44, 15, 34, 0.88) 0%, rgba(24, 8, 19, 0.94) 100%);
+            -webkit-backdrop-filter: blur(18px);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(212, 175, 55, 0.38);
+            box-shadow: 
+                0 30px 70px -15px rgba(0, 0, 0, 0.75),
+                inset 0 0 40px rgba(232, 153, 166, 0.08);
+        }
+
+        /* Polaroid Memory Showcase (3D Flip & Tilt) */
+        .polaroid-scene {
+            perspective: 1200px;
+            -webkit-perspective: 1200px;
+        }
+
+        .polaroid-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .polaroid-card-inner.is-flipped {
+            transform: rotateY(180deg);
+            -webkit-transform: rotateY(180deg);
+        }
+
+        .polaroid-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .polaroid-front {
+            background: linear-gradient(180deg, #fffdf9 0%, #f5ebe0 100%);
+            padding: 12px 12px 48px 12px;
+            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(212, 175, 55, 0.35);
+            color: #3a0f29;
+        }
+
+        .polaroid-back {
+            background: linear-gradient(145deg, #3b102b 0%, #1d0715 100%);
+            border: 1.5px solid rgba(212, 175, 55, 0.55);
+            transform: rotateY(180deg);
+            -webkit-transform: rotateY(180deg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.65);
+        }
+
+        /* Vinyl Record Rotation & Soundwave Bars */
+        @keyframes spinVinyl {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .vinyl-spinning {
+            animation: spinVinyl 6s linear infinite;
+        }
+
+        @keyframes eqBar {
+            0%, 100% { height: 4px; }
+            50% { height: 16px; }
+        }
+
+        .eq-active .bar-1 { animation: eqBar 0.7s infinite ease-in-out; }
+        .eq-active .bar-2 { animation: eqBar 0.5s infinite ease-in-out 0.15s; }
+        .eq-active .bar-3 { animation: eqBar 0.8s infinite ease-in-out 0.3s; }
+        .eq-active .bar-4 { animation: eqBar 0.6s infinite ease-in-out 0.1s; }
+
+        /* Birthday Candle Flame Flicker */
+        @keyframes flameFlicker {
+            0%, 100% { transform: translateX(-50%) scale(1) rotate(-2deg); opacity: 0.95; }
+            25% { transform: translateX(-50%) scale(1.08, 0.94) rotate(2deg); opacity: 1; }
+            50% { transform: translateX(-50%) scale(0.95, 1.06) rotate(-1deg); opacity: 0.9; }
+            75% { transform: translateX(-50%) scale(1.05) rotate(3deg); opacity: 1; }
+        }
+
+        .candle-flame {
+            animation: flameFlicker 0.9s infinite ease-in-out;
+            transform-origin: bottom center;
+        }
+
+        /* Smoke rise after blowing out candle */
+        @keyframes smokeRise {
+            0% { opacity: 0.8; transform: translate(-50%, 0) scale(0.6); }
+            100% { opacity: 0; transform: translate(-35%, -45px) scale(1.8); }
+        }
+
+        .smoke-puff {
+            animation: smokeRise 1.6s ease-out forwards;
+        }
+
+        /* Typewriter blinking cursor */
+        .typing-cursor::after {
+            content: '|';
+            color: #d4af37;
+            animation: blinkCursor 0.8s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blinkCursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Smooth Fade In */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(28px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .animate-stage-enter {
+            animation: fadeSlideUp 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #140812; }
+        ::-webkit-scrollbar-thumb { background: #6b214a; border-radius: 99px; }
+    </style>
+</head>
+<body class="relative flex flex-col items-center justify-center min-h-screen p-4 sm:p-6">
+
+    <!-- Ambient Starfield & Heart Trail Canvas -->
+    <canvas id="bg-canvas"></canvas>
+    <!-- Celebration Fireworks & Confetti Canvas -->
+    <canvas id="fx-canvas"></canvas>
+
+    <!-- Floating Top Bar: Vinyl Music Player Widget & Discreet Creator Gear -->
+    <header class="fixed top-3 inset-x-3 z-40 flex items-center justify-between max-w-4xl mx-auto pointer-events-none" style="top: max(0.75rem, env(safe-area-inset-top));">
+        <!-- Floating Vinyl Music Player -->
+        <div id="music-widget" class="pointer-events-auto flex items-center gap-2.5 sm:gap-3 px-3 sm:px-3.5 py-2 rounded-full bg-black/65 backdrop-blur-md border border-amber-400/35 shadow-xl transition-all hover:border-amber-400/60" style="-webkit-backdrop-filter: blur(12px);">
+            <!-- Spinning Vinyl Disc -->
+            <div id="vinyl-disc" class="relative w-9 h-9 rounded-full bg-gradient-to-tr from-zinc-900 via-zinc-700 to-zinc-900 border border-amber-300/40 flex items-center justify-center shadow-inner">
+                <div class="w-3.5 h-3.5 rounded-full bg-gradient-to-br from-rose-400 to-amber-300 border border-black/40"></div>
+            </div>
+
+            <!-- Track Info & Visualizer -->
+            <div class="hidden sm:flex flex-col text-left pr-1">
+                <span class="text-[11px] font-semibold text-amber-200/90 tracking-wide leading-tight">Our Melody ✨</span>
+                <span id="music-status-text" class="text-[10px] text-rose-200/70">Tap to play song</span>
+            </div>
+
+            <!-- Soundwave Bars -->
+            <div id="eq-visualizer" class="flex items-end gap-0.5 h-4 px-1">
+                <span class="bar-1 w-0.5 h-1.5 bg-amber-400 rounded-full"></span>
+                <span class="bar-2 w-0.5 h-2.5 bg-rose-400 rounded-full"></span>
+                <span class="bar-3 w-0.5 h-1.5 bg-amber-400 rounded-full"></span>
+                <span class="bar-4 w-0.5 h-2 bg-rose-400 rounded-full"></span>
+            </div>
+
+            <!-- Play/Pause Toggle -->
+            <button id="music-toggle-btn" aria-label="Play or Pause Romantic Music" class="w-8 h-8 rounded-full bg-rose-500/20 hover:bg-rose-500/40 text-amber-200 flex items-center justify-center transition-colors cursor-pointer">
+                <svg id="icon-play" class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <svg id="icon-pause" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+        </div>
+
+        <!-- Discreet Creator Studio Edit Button -->
+        <button id="open-studio-btn" title="Customize & Share Card" class="hidden pointer-events-auto p-2.5 rounded-full bg-black/45 hover:bg-black/70 text-rose-200/70 hover:text-amber-300 backdrop-blur-md border border-white/10 hover:border-amber-400/40 transition-all cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+        </button>
+    </header>
+
+    <!-- Main Container -->
+    <main class="relative z-10 w-full max-w-2xl mx-auto my-auto pt-14 pb-8 flex flex-col items-center justify-center">
+
+        <!-- =========================================================
+             STAGE 1: THE MAGICAL HEARTBEAT LOCK
+             ========================================================= -->
+        <section id="stage-1-lock" class="flex flex-col items-center justify-center text-center px-4">
+            <span class="px-4 py-1.5 rounded-full bg-rose-500/15 border border-rose-400/30 text-rose-200 text-xs sm:text-sm tracking-widest uppercase mb-8">
+                ✨ A Surprise For You ✨
+            </span>
+
+            <!-- Interactive Beating Heart with Progress Ring -->
+            <div class="relative flex items-center justify-center w-48 h-48 sm:w-56 sm:h-56 my-2">
+                <!-- SVG Progress Ring -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(232, 153, 166, 0.15)" stroke-width="3" />
+                    <circle id="unlock-ring" class="progress-ring__circle" cx="60" cy="60" r="54" fill="none" stroke="#d4af37" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="339.29" stroke-dashoffset="339.29" />
+                </svg>
+
+                <!-- Glowing 3D Heart Button (Original Classic Shape) -->
+                <button id="heart-lock-btn" aria-label="Tap and hold heart to unlock" class="relative w-32 h-32 sm:w-36 sm:h-36 flex items-center justify-center cursor-pointer focus:outline-none heart-beat-anim">
+                    <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_10px_25px_rgba(225,29,72,0.7)]">
+                        <defs>
+                            <radialGradient id="heartGrad" cx="35%" cy="30%" r="70%">
+                                <stop offset="0%" stop-color="#ff8fa3" />
+                                <stop offset="45%" stop-color="#e11d48" />
+                                <stop offset="100%" stop-color="#881337" />
+                            </radialGradient>
+                        </defs>
+                        <path fill="url(#heartGrad)" d="M50 88 C50 88 10 62 10 34 C10 20 21 10 34 10 C42 10 47 14 50 21 C53 14 58 10 66 10 C79 10 90 20 90 34 C90 62 50 88 50 88 Z" />
+                        <!-- Glossy Highlight -->
+                        <ellipse cx="32" cy="28" rx="9" ry="5" transform="rotate(-30 32 28)" fill="rgba(255,255,255,0.35)" />
+                    </svg>
+                    <span class="absolute text-white/95 font-serif-display italic text-sm sm:text-base tracking-wide pointer-events-none">
+                        Unlock
+                    </span>
+                </button>
+            </div>
+
+            <h1 class="font-script text-4xl sm:text-5xl text-amber-200 mt-6 mb-2">
+                My Heart Beats For You
+            </h1>
+            <p id="lock-instruction" class="text-rose-200/90 text-base sm:text-lg max-w-xs mx-auto leading-relaxed font-medium">
+                Press on the heart ya Habebty ❤️
+            </p>
+        </section>
+
+        <!-- =========================================================
+             STAGE 2: INTERACTIVE 3D ENVELOPE & WAX SEAL
+             ========================================================= -->
+        <section id="stage-2-envelope" class="hidden flex-col items-center justify-center text-center px-4">
+            <div class="mb-6">
+                <p class="text-amber-300/90 text-xs uppercase tracking-[0.25em] mb-1">Delivered With Love</p>
+                <h2 class="font-serif-display text-2xl sm:text-3xl text-champagne">You Have A Private Letter</h2>
+            </div>
+
+            <div class="envelope-perspective my-4">
+                <div id="envelope-box" class="envelope-3d" role="button" tabindex="0" aria-label="Break wax seal to open envelope">
+                    <div class="env-flap"></div>
+                    <div class="letter-peek">
+                        <span class="font-script text-2xl text-rose-700">Happy Birthday, My Love</span>
+                        <span class="text-xs text-rose-900/60 mt-1">Opening your letter...</span>
+                    </div>
+                    <div class="env-left"></div>
+                    <div class="env-right"></div>
+                    <div class="env-bottom"></div>
+
+                    <!-- Shimmering Gold Wax Seal -->
+                    <div class="wax-seal-btn">
+                        <span class="text-2xl drop-shadow">❤️</span>
+                    </div>
+
+                    <!-- Addressed Label -->
+                    <div class="absolute bottom-4 inset-x-0 z-10 px-4">
+                        <p id="envelope-recipient-label" class="font-serif-display italic text-amber-200 text-base sm:text-lg drop-shadow">
+                            For My Favorite Person ❤️
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             STAGE 3: INTERACTIVE LOVE CARD & MINI-EXPERIENCES
+             ========================================================= -->
+        <section id="stage-3-card" class="hidden w-full space-y-6">
+            
+            <!-- Main Typewriter Love Letter Card -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-10 relative overflow-hidden text-center">
+                <!-- Decorative Corner Flourishes -->
+                <span class="absolute top-3 left-4 text-amber-400/35 text-2xl pointer-events-none">❦</span>
+                <span class="absolute top-3 right-4 text-amber-400/35 text-2xl pointer-events-none transform scale-x-[-1]">❦</span>
+
+                <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-200 text-xs sm:text-sm font-medium mb-4">
+                    <span>👑</span>
+                    <span id="card-recipient-badge">To My Soulmate &amp; Best Friend</span>
+                </div>
+
+                <h1 id="card-main-heading" class="font-script text-4xl sm:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-rose-200 to-amber-200 leading-tight mb-4 py-1">
+                    Happy Birthday, My Love!
+                </h1>
+
+                <div class="flex items-center justify-center gap-3 my-4">
+                    <span class="h-px w-14 bg-gradient-to-r from-transparent to-amber-400/60"></span>
+                    <span class="text-amber-300 text-xs">✦ ❤️ ✦</span>
+                    <span class="h-px w-14 bg-gradient-to-l from-transparent to-amber-400/60"></span>
+                </div>
+
+                <!-- Typewriter Message Container -->
+                <div class="min-h-[120px] flex items-center justify-center">
+                    <p id="typewriter-text" class="font-serif-display text-base sm:text-lg text-rose-100/95 leading-relaxed max-w-lg mx-auto whitespace-pre-line"></p>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs sm:text-sm text-amber-200/85">
+                    <span id="card-sender-sign" class="font-script text-2xl text-amber-300">Forever Yours ❤️</span>
+                    <button id="retype-btn" class="text-rose-300/70 hover:text-amber-200 underline underline-offset-4 cursor-pointer">
+                        Replay Letter
+                    </button>
+                </div>
+            </div>
+
+            <!-- =========================================================
+                 THEN & NOW: INTERACTIVE POLAROID MEMORY SHOWCASE
+                 ========================================================= -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-8 text-center relative overflow-hidden">
+                <span class="text-xs uppercase tracking-widest text-amber-300/90 font-semibold">📸 Through Every Chapter</span>
+                <h3 class="font-serif-display text-2xl sm:text-3xl text-white mt-1 mb-1.5">
+                    Then &amp; Now
+                </h3>
+                <p class="text-xs sm:text-sm text-rose-200/75 mb-6">
+                    Tap a Polaroid to flip &amp; read the hidden note, or tap 🔍 to zoom ✨
+                </p>
+
+                <!-- Hidden File Inputs for Direct Gallery Upload (Works on iPhone & Desktop) -->
+                <input type="file" id="upload-photo-then" accept="image/*" class="hidden" />
+                <input type="file" id="upload-photo-now" accept="image/*" class="hidden" />
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-7 max-w-xl mx-auto items-stretch">
+                    <!-- Polaroid 1: Childhood Photo ("Little Star") -->
+                    <div class="polaroid-scene h-[340px] w-full max-w-[270px] mx-auto transition-transform duration-300">
+                        <div id="polaroid-then" class="polaroid-card-inner" role="button" tabindex="0" aria-label="Flip Little Star childhood Polaroid">
+                            <!-- Front Side -->
+                            <div class="polaroid-face polaroid-front flex flex-col">
+                                <div class="relative w-full h-full rounded-lg overflow-hidden bg-rose-100 shadow-inner">
+                                    <img
+                                        id="img-then"
+                                        src="https://i.postimg.cc/QxkJYc2M/IMG-20260622-WA0018.jpg"
+                                        alt="Little Star Childhood Photo"
+                                        class="w-full h-full object-cover object-center"
+                                    />
+                                    <!-- Zoom Button -->
+                                    <button type="button" data-zoom-img="img-then" data-zoom-caption="Little Star ✨ — Where the magic began" aria-label="Zoom Little Star Photo" class="zoom-photo-btn absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-black/55 hover:bg-black/80 text-white flex items-center justify-center text-xs shadow-md backdrop-blur-sm cursor-pointer">
+                                        🔍
+                                    </button>
+                                </div>
+                                <div class="absolute bottom-2.5 inset-x-3 flex items-center justify-between">
+                                    <span class="font-script text-xl text-rose-900 leading-none">Little Star ✨</span>
+                                    <span class="text-[10px] font-semibold uppercase tracking-wider text-rose-700/70">Tap to flip ↻</span>
+                                </div>
+                            </div>
+
+                            <!-- Back Side (Secret Romantic Note) -->
+                            <div class="polaroid-face polaroid-back">
+                                <span class="text-3xl mb-2">🌟</span>
+                                <h4 class="font-script text-3xl text-amber-200 mb-2">Little Star</h4>
+                                <p id="note-then-text" class="font-serif-display italic text-sm text-rose-100/95 leading-relaxed">
+                                    "Look at this adorable little soul—the universe was already shaping the sweetest heart I would ever fall in love with."
+                                </p>
+                                <span class="mt-4 text-[11px] uppercase tracking-widest text-amber-300/75">Tap to flip back ↺</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Polaroid 2: Current Portrait ("My Favorite View") -->
+                    <div class="polaroid-scene h-[340px] w-full max-w-[270px] mx-auto transition-transform duration-300">
+                        <div id="polaroid-now" class="polaroid-card-inner" role="button" tabindex="0" aria-label="Flip My Favorite View Polaroid">
+                            <!-- Front Side -->
+                            <div class="polaroid-face polaroid-front flex flex-col">
+                                <div class="relative w-full h-full rounded-lg overflow-hidden bg-rose-100 shadow-inner">
+                                    <img
+                                        id="img-now"
+                                        src="https://i.postimg.cc/4NbQ2pDJ/IMG-20260402-061252-009.jpg"
+                                        alt="My Favorite View Portrait"
+                                        class="w-full h-full object-cover object-top"
+                                    />
+                                    <!-- Zoom Button -->
+                                    <button type="button" data-zoom-img="img-now" data-zoom-caption="My Favorite View ❤️ — Gorgeous inside & out" aria-label="Zoom My Favorite View Photo" class="zoom-photo-btn absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-black/55 hover:bg-black/80 text-white flex items-center justify-center text-xs shadow-md backdrop-blur-sm cursor-pointer">
+                                        🔍
+                                    </button>
+                                </div>
+                                <div class="absolute bottom-2.5 inset-x-3 flex items-center justify-between">
+                                    <span class="font-script text-xl text-rose-900 leading-none">My Favorite View ❤️</span>
+                                    <span class="text-[10px] font-semibold uppercase tracking-wider text-rose-700/70">Tap to flip ↻</span>
+                                </div>
+                            </div>
+
+                            <!-- Back Side (Secret Romantic Note) -->
+                            <div class="polaroid-face polaroid-back">
+                                <span class="text-3xl mb-2">💖</span>
+                                <h4 class="font-script text-3xl text-amber-200 mb-2">My Favorite View</h4>
+                                <p id="note-now-text" class="font-serif-display italic text-sm text-rose-100/95 leading-relaxed">
+                                    "And now look at you—still carrying that same pure magic, only brighter, sweeter, and the most beautiful part of my world."
+                                </p>
+                                <span class="mt-4 text-[11px] uppercase tracking-widest text-amber-300/75">Tap to flip back ↺</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Mini-Experience A: Scratch-Off "Why I Adore You" (7 Love Reasons) -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-8 text-center max-w-lg mx-auto w-full">
+                <span class="text-xs uppercase tracking-widest text-amber-300/90 font-semibold">💌 7 Secret Reasons</span>
+                <h3 class="font-serif-display text-2xl sm:text-3xl text-white mt-1 mb-1">Why I Adore You</h3>
+                <p class="text-xs sm:text-sm text-rose-200/75 mb-5">Scratch each golden card with your finger to reveal a reason ✨</p>
+
+                <div class="space-y-3">
+                    <!-- Scratch Reason 1 -->
+                    <div class="relative min-h-[76px] rounded-2xl overflow-hidden border border-amber-400/45 bg-gradient-to-r from-rose-950 via-[#3b102b] to-rose-950 flex items-center justify-center px-4 py-2.5 shadow-inner">
+                        <p class="font-serif-display italic text-sm text-rose-100 leading-snug">
+                            "Your smile instantly turns my hardest days into pure magic."
+                        </p>
+                        <canvas class="scratch-canvas absolute inset-0 w-full h-full cursor-pointer" data-label="✨ Scratch Reason #1 ✨"></canvas>
+                    </div>
+
+                    <!-- Scratch Reason 2 -->
+                    <div class="relative min-h-[76px] rounded-2xl overflow-hidden border border-amber-400/45 bg-gradient-to-r from-rose-950 via-[#3b102b] to-rose-950 flex items-center justify-center px-4 py-2.5 shadow-inner">
+                        <p class="font-serif-display italic text-sm text-rose-100 leading-snug">
+                            "The way your eyes light up whenever you talk about things you love."
+                        </p>
+                        <canvas class="scratch-canvas absolute inset-0 w-full h-full cursor-pointer" data-label="✨ Scratch Reason #2 ✨"></canvas>
+                    </div>
+
+                    <!-- Scratch Reason 3 -->
+                    <div class="relative min-h-[76px] rounded-2xl overflow-hidden border border-amber-400/45 bg-gradient-to-r from-rose-950 via-[#3b102b] to-rose-950 flex items-center justify-center px-4 py-2.5 shadow-inner">
+                        <p class="font-serif-display italic text-sm text-rose-100 leading-snug">
+                            "You make ordinary moments feel like my favorite memories."
+                        </p>
+                        <canvas class="scratch-canvas absolute inset-0 w-full h-full cursor-pointer" data-label="✨ Scratch Reason #3 ✨"></canvas>
+                    </div>
+
+                    <!-- Scratch Reason 4 -->
+                    <div class="relative min-h-[76px] rounded-2xl overflow-hidden border border-amber-400/45 bg-gradient-to-r from-rose-950 via-[#3b102b] to-rose-950 flex items-center justify-center px-4 py-2.5 shadow-inner">
+                        <p class="font-serif-display italic text-sm text-rose-100 leading-snug">
+                            "Your kindness, warmth, and the gentle way you care for everyone."
+                        </p>
+                        <canvas class="scratch-canvas absolute inset-0 w-full h-full cursor-pointer" data-label="✨ Scratch Reason #4 ✨"></canvas>
+                    </div>
+
+                    <!-- Scratch Reason 5 -->
+                    <div class="relative min-h-[76px] rounded-2xl overflow-hidden border border-amber-400/45 bg-gradient-to-r from-rose-950 via-[#3b102b] to-rose-950 flex items-center justify-center px-4 py-2.5 shadow-inner">
+                        <p class="font-serif-display italic text-sm text-rose-100 leading-snug">
+                            "Every laugh we share feels like the best song I've ever heard."
+                        </p>
+                        <canvas class="scratch-canvas absolute inset-0 w-full h-full cursor-pointer" data-label="✨ Scratch Reason #5 ✨"></canvas>
+                    </div>
+
+                    <!-- Scratch Reason 6 -->
+                    <div class="relative min-h-[76px] rounded-2xl overflow-hidden border border-amber-400/45 bg-gradient-to-r from-rose-950 via-[#3b102b] to-rose-950 flex items-center justify-center px-4 py-2.5 shadow-inner">
+                        <p class="font-serif-display italic text-sm text-rose-100 leading-snug">
+                            "You inspire me to be a better person every single day."
+                        </p>
+                        <canvas class="scratch-canvas absolute inset-0 w-full h-full cursor-pointer" data-label="✨ Scratch Reason #6 ✨"></canvas>
+                    </div>
+
+                    <!-- Scratch Reason 7 -->
+                    <div class="relative min-h-[76px] rounded-2xl overflow-hidden border border-amber-400/45 bg-gradient-to-r from-rose-950 via-[#3b102b] to-rose-950 flex items-center justify-center px-4 py-2.5 shadow-inner">
+                        <p class="font-serif-display italic text-sm text-rose-100 leading-snug">
+                            "Simply because loving you is the easiest thing I've ever done. ❤️"
+                        </p>
+                        <canvas class="scratch-canvas absolute inset-0 w-full h-full cursor-pointer" data-label="✨ Scratch Reason #7 ✨"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Mini-Experience B: Tap My Heart ("Ba7ebek" Counter) -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-8 text-center max-w-lg mx-auto w-full relative overflow-hidden">
+                <span class="text-xs uppercase tracking-widest text-amber-300/90 font-semibold">💓 Tap My Heart</span>
+                <div class="min-h-[56px] flex items-center justify-center my-2">
+                    <p id="ba7ebek-phrase-display" class="font-script text-4xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-rose-300 via-amber-200 to-rose-300 transition-all duration-200">
+                        Ba7ebek ❤️
+                    </p>
+                </div>
+                <div class="flex flex-col items-center justify-center mt-2">
+                    <!-- Interactive Jewel Heart Button -->
+                    <button id="ba7ebek-heart-btn" type="button" aria-label="Tap heart for love message" class="relative w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center cursor-pointer focus:outline-none heart-beat-anim active:scale-90 transition-transform">
+                        <span class="absolute inset-3 rounded-full border border-amber-300/40 heart-ripple pointer-events-none"></span>
+                        <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_10px_25px_rgba(244,63,94,0.75)]">
+                            <defs>
+                                <linearGradient id="tapJewelHeart" x1="20%" y1="10%" x2="80%" y2="90%">
+                                    <stop offset="0%" stop-color="#fecdd3" />
+                                    <stop offset="40%" stop-color="#fb7185" />
+                                    <stop offset="80%" stop-color="#e11d48" />
+                                    <stop offset="100%" stop-color="#881337" />
+                                </linearGradient>
+                            </defs>
+                            <path fill="url(#tapJewelHeart)" stroke="#fde68a" stroke-width="2.2"
+                                  d="M50 88 C50 88 11 62 11 34 C11 20 21 10 34 10 C42 10 47 14 50 21 C53 14 58 10 66 10 C79 10 89 20 89 34 C89 62 50 88 50 88 Z" />
+                            <polygon points="50,21 34,10 11,34 50,48" fill="rgba(255,255,255,0.35)" />
+                            <polygon points="89,34 50,48 50,88" fill="rgba(0,0,0,0.16)" />
+                            <path d="M28 20 L29.2 23.2 L32.5 24.5 L29.2 25.8 L28 29 L26.8 25.8 L23.5 24.5 L26.8 23.2 Z" fill="#ffffff" opacity="0.9" />
+                        </svg>
+                        <span class="absolute text-white/95 font-script text-2xl drop-shadow pointer-events-none mt-1">Tap</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mini-Experience C: Luxury 3-Tier Rose & Gold Drip Birthday Cake -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-8 text-center relative overflow-hidden">
+                <!-- Romantic Curved Arrow & Post-Tap Birthday Message -->
+                <div class="flex flex-col items-center justify-center mb-2 min-h-[120px]">
+                    <div id="cake-heading" class="hidden flex-col items-center animate-stage-enter">
+                        <h3 class="font-script text-3xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-rose-200 to-amber-200 leading-tight">
+                            Happy Birthday ya Habebty ❤️
+                        </h3>
+                        <p class="font-script text-6xl sm:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-rose-300 via-amber-200 to-rose-300 drop-shadow-[0_0_25px_rgba(251,113,133,0.65)] leading-none mt-1">
+                            Ba7ebek ❤️
+                        </p>
+                    </div>
+                    <svg id="cake-arrow" class="w-12 h-12 text-amber-300 mt-1 animate-bounce" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 8 C 36 16, 38 34, 32 52" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 3"/>
+                        <path d="M24 44 L 32 54 L 40 45" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+
+                <!-- Luxury Multi-Tiered Drip & Rose Birthday Cake -->
+                <div id="cake-interactive-area" class="relative w-60 h-56 mx-auto flex flex-col items-center justify-end cursor-pointer group select-none" role="button" tabindex="0" aria-label="Blow out birthday candle">
+                    <!-- Golden Sparkle Candle & Flickering Flame -->
+                    <div class="relative flex flex-col items-center mb-[-2px] z-30">
+                        <!-- Outer Warm Glow Halo -->
+                        <div id="candle-glow" class="absolute -top-11 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-amber-400/30 blur-md pointer-events-none"></div>
+                        <!-- Flickering Teardrop Flame -->
+                        <div id="candle-flame" class="candle-flame absolute -top-9 left-1/2 w-5 h-9 rounded-full bg-gradient-to-t from-orange-500 via-amber-300 to-white shadow-[0_0_24px_#fbbf24]"></div>
+                        <!-- Smoke Puff (Hidden until blown out) -->
+                        <div id="candle-smoke" class="hidden absolute -top-10 left-1/2 w-5 h-5 rounded-full bg-gray-200/70 blur-sm"></div>
+                        <!-- Gold Spiral Candle Body -->
+                        <div class="w-3.5 h-12 rounded-t-md bg-gradient-to-r from-amber-300 via-yellow-100 to-amber-400 border border-amber-500/50 shadow-md overflow-hidden relative">
+                            <div class="w-full h-1.5 bg-rose-500/60 -rotate-12 mt-2"></div>
+                            <div class="w-full h-1.5 bg-rose-500/60 -rotate-12 mt-2"></div>
+                            <div class="w-full h-1.5 bg-rose-500/60 -rotate-12 mt-2"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tier 1 (Top Velvet Tier with White Cream Drip) -->
+                    <div class="relative w-28 h-11 rounded-t-2xl bg-gradient-to-r from-rose-500 via-pink-400 to-rose-500 shadow-lg z-20 overflow-hidden border-t border-white/50">
+                        <!-- Cream Drip SVG -->
+                        <svg viewBox="0 0 112 24" class="w-full h-6 fill-[#fff8f3] drop-shadow-sm">
+                            <path d="M0,0 L112,0 L112,8 C106,8 105,18 100,18 C95,18 94,9 88,9 C82,9 80,22 74,22 C68,22 67,10 60,10 C53,10 51,19 45,19 C39,19 38,8 31,8 C24,8 22,21 16,21 C10,21 8,9 0,9 Z" />
+                        </svg>
+                        <!-- Mini Heart Topper Accent -->
+                        <div class="absolute bottom-1 inset-x-0 flex justify-center gap-2 text-[10px]">
+                            <span>🤍</span><span>👑</span><span>🤍</span>
+                        </div>
+                    </div>
+
+                    <!-- Tier 2 (Middle Champagne & Rose Tier with Gold Pearls) -->
+                    <div class="relative w-40 h-13 rounded-t-2xl bg-gradient-to-r from-rose-700 via-rose-500 to-rose-700 shadow-xl z-10 overflow-hidden border-t-2 border-amber-200/80">
+                        <!-- Rose Frosting Drip -->
+                        <svg viewBox="0 0 160 24" class="w-full h-6 fill-pink-200/95">
+                            <path d="M0,0 L160,0 L160,7 C152,7 150,19 142,19 C134,19 132,8 122,8 C112,8 109,22 100,22 C91,22 89,9 79,9 C69,9 66,18 57,18 C48,18 45,8 35,8 C25,8 22,20 14,20 C6,20 4,8 0,8 Z" />
+                        </svg>
+                        <!-- Gold Sugar Pearls Row -->
+                        <div class="flex items-center justify-around px-3 pt-1 pb-1.5">
+                            <span class="w-2 h-2 rounded-full bg-amber-300 shadow"></span>
+                            <span class="text-xs">🌹</span>
+                            <span class="w-2 h-2 rounded-full bg-amber-300 shadow"></span>
+                            <span class="text-xs">🌹</span>
+                            <span class="w-2 h-2 rounded-full bg-amber-300 shadow"></span>
+                        </div>
+                    </div>
+
+                    <!-- Tier 3 (Grand Base Royal Velvet Tier with Gold Drip) -->
+                    <div class="relative w-52 h-14 rounded-t-2xl rounded-b-xl bg-gradient-to-r from-[#4a0e2e] via-[#701645] to-[#4a0e2e] shadow-2xl overflow-hidden border-t-2 border-amber-300">
+                        <!-- Gold Ganache Drip -->
+                        <svg viewBox="0 0 208 24" class="w-full h-6 fill-amber-300/90">
+                            <path d="M0,0 L208,0 L208,8 C198,8 195,20 186,20 C177,20 174,9 162,9 C150,9 146,22 135,22 C124,22 120,10 108,10 C96,10 92,19 81,19 C70,19 66,8 54,8 C42,8 38,21 27,21 C16,21 12,9 0,9 Z" />
+                        </svg>
+                        <!-- Bottom Decorative Pearls & Hearts -->
+                        <div class="flex items-center justify-between px-4 pt-1.5 text-xs text-amber-200">
+                            <span>✨</span>
+                            <span>💖</span>
+                            <span>✨</span>
+                            <span>💖</span>
+                            <span>✨</span>
+                        </div>
+                    </div>
+
+                    <!-- Ornate Golden Cake Stand & Pedestal -->
+                    <div class="w-56 h-2.5 rounded-full bg-gradient-to-r from-amber-500 via-yellow-200 to-amber-500 shadow-[0_6px_18px_rgba(212,175,55,0.45)]"></div>
+                    <div class="w-16 h-3 bg-gradient-to-r from-amber-600 via-amber-300 to-amber-600 rounded-b-lg"></div>
+                    <div class="w-28 h-2 rounded-full bg-gradient-to-r from-amber-500 via-yellow-200 to-amber-500 shadow-md"></div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Fullscreen Photo Lightbox Modal (iPhone-Friendly Zoom) -->
+    <div id="photo-lightbox" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/90 backdrop-blur-md" style="-webkit-backdrop-filter: blur(12px);">
+        <div class="relative max-w-md w-full flex flex-col items-center">
+            <button id="close-lightbox-btn" aria-label="Close Zoomed Photo" class="self-end mb-3 w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 text-white font-bold flex items-center justify-center cursor-pointer">
+                ✕
+            </button>
+            <div class="w-full rounded-2xl overflow-hidden border-2 border-amber-300/50 shadow-2xl bg-black">
+                <img id="lightbox-img" src="" alt="Zoomed Memory" class="w-full max-h-[70dvh] object-contain mx-auto" />
+            </div>
+            <p id="lightbox-caption" class="font-script text-3xl text-amber-200 text-center mt-4 px-2"></p>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         HIDDEN CREATOR STUDIO MODAL (CUSTOMIZE & SHARE)
+         ========================================================= -->
+    <div id="studio-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-md">
+        <div class="bg-[#210b19] border border-amber-400/40 rounded-3xl w-full max-w-md p-6 sm:p-7 shadow-2xl max-h-[90vh] overflow-y-auto text-left">
+            <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
+                <div>
+                    <h2 class="font-serif-display text-xl text-amber-200 font-bold">✨ Creator Studio</h2>
+                    <p class="text-xs text-rose-200/70">Personalize every detail &amp; generate her link</p>
+                </div>
+                <button id="close-studio-btn" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-rose-200 flex items-center justify-center cursor-pointer">
+                    ✕
+                </button>
+            </div>
+
+            <form id="studio-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-amber-200/90 mb-1">Her Name / Nickname</label>
+                    <input type="text" id="edit-name" class="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-rose-300/25 focus:border-amber-400 outline-none text-white text-sm" placeholder="e.g., My Sweet Sarah">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-amber-200/90 mb-1">Main Birthday Heading</label>
+                    <input type="text" id="edit-heading" class="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-rose-300/25 focus:border-amber-400 outline-none text-white text-sm" placeholder="Happy Birthday, My Love!">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-amber-200/90 mb-1">Typewriter Love Letter</label>
+                    <textarea id="edit-letter" rows="4" class="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-rose-300/25 focus:border-amber-400 outline-none text-white text-sm resize-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-amber-200/90 mb-1">Your Signature (Sender)</label>
+                    <input type="text" id="edit-sender" class="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-rose-300/25 focus:border-amber-400 outline-none text-white text-sm" placeholder="Forever Yours ❤️">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-amber-200/90 mb-1">Optional Photo URLs (Leave blank for built-in photos)</label>
+                    <div class="grid grid-cols-1 gap-2">
+                        <input type="url" id="edit-photo-then" class="w-full px-3.5 py-2 rounded-xl bg-black/40 border border-rose-300/25 focus:border-amber-400 outline-none text-white text-xs" placeholder="Childhood Photo URL (optional)">
+                        <input type="url" id="edit-photo-now" class="w-full px-3.5 py-2 rounded-xl bg-black/40 border border-rose-300/25 focus:border-amber-400 outline-none text-white text-xs" placeholder="Current Portrait URL (optional)">
+                    </div>
+                </div>
+
+                <div class="pt-3 flex flex-col sm:flex-row gap-2.5">
+                    <button type="submit" class="flex-1 py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-sm shadow-lg transition-all cursor-pointer">
+                        Apply Changes ❤️
+                    </button>
+                    <button type="button" id="share-link-btn" class="py-3 px-4 rounded-xl bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 font-bold text-sm border border-amber-400/40 transition-all cursor-pointer">
+                        Copy Share Link 🔗
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Toast Banner -->
+    <div id="toast-banner" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full bg-amber-300 text-rose-950 font-bold text-xs sm:text-sm shadow-2xl opacity-0 pointer-events-none transition-all duration-300 translate-y-4">
+        Link copied! Send it to her ❤️
+    </div>
+
+    <script>
+        /**
+         * =========================================================================
+         * 1. BUILT-IN POLYPHONIC WEB AUDIO ROMANTIC PIANO & MUSIC-BOX ENGINE
+         * =========================================================================
+         * Synthesizes a dreamy, emotional romantic arrangement blending a warm
+         * electric-piano / music-box melody ("Happy Birthday" woven into a romantic
+         * ballad progression) with lush ambient pad chords—zero external audio files!
+         */
+        class RomanticMusicEngine {
+            constructor() {
+                this.ctx = null;
+                this.masterGain = null;
+                this.isPlaying = false;
+                this.stepIndex = 0;
+                this.timerId = null;
+
+                // Frequencies (Hz)
+                const N = {
+                    C3: 130.81, F3: 174.61, G3: 196.00, A3: 220.00, Bb3: 233.08,
+                    C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, Bb4: 466.16,
+                    C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.00
+                };
+
+                // Romantic Ballad Arrangement of "Happy Birthday" + Dreamy Interlude (in F Major)
+                // Each step: { mel: noteFreq | null, dur: beats, chord: [padFreqs] | null }
+                const tempoBeat = 0.52; // Gentle, emotional 3/4 waltz feel
+                this.beatSec = tempoBeat;
+
+                this.sequence = [
+                    // "Hap-py Birth-day to you"
+                    { mel: N.C4, dur: 0.75, chord: [N.F3, N.A3, N.C4] },
+                    { mel: N.C4, dur: 0.25, chord: null },
+                    { mel: N.D4, dur: 1.0,  chord: [N.F3, N.C4, N.A4] },
+                    { mel: N.C4, dur: 1.0,  chord: null },
+                    { mel: N.F4, dur: 1.0,  chord: [N.F3, N.A3, N.C4] },
+                    { mel: N.E4, dur: 2.0,  chord: [N.C3, N.G3, N.E4] },
+
+                    // "Hap-py Birth-day to you"
+                    { mel: N.C4, dur: 0.75, chord: null },
+                    { mel: N.C4, dur: 0.25, chord: null },
+                    { mel: N.D4, dur: 1.0,  chord: [N.C3, N.G3, N.Bb3] },
+                    { mel: N.C4, dur: 1.0,  chord: null },
+                    { mel: N.G4, dur: 1.0,  chord: [N.C3, N.E4, N.Bb4] },
+                    { mel: N.F4, dur: 2.0,  chord: [N.F3, N.A3, N.C4] },
+
+                    // "Hap-py Birth-day, My Love..."
+                    { mel: N.C4, dur: 0.75, chord: null },
+                    { mel: N.C4, dur: 0.25, chord: null },
+                    { mel: N.C5, dur: 1.0,  chord: [N.F3, N.A3, N.F4] },
+                    { mel: N.A4, dur: 1.0,  chord: null },
+                    { mel: N.F4, dur: 1.0,  chord: [N.Bb3, N.D4, N.F4] },
+                    { mel: N.E4, dur: 1.0,  chord: null },
+                    { mel: N.D4, dur: 2.0,  chord: [N.G3, N.Bb3, N.D4] },
+
+                    // "Hap-py Birth-day to you"
+                    { mel: N.Bb4, dur: 0.75, chord: [N.Bb3, N.D4, N.F4] },
+                    { mel: N.Bb4, dur: 0.25, chord: null },
+                    { mel: N.A4,  dur: 1.0,  chord: [N.F3, N.C4, N.F4] },
+                    { mel: N.F4,  dur: 1.0,  chord: null },
+                    { mel: N.G4,  dur: 1.0,  chord: [N.C3, N.G3, N.Bb3] },
+                    { mel: N.F4,  dur: 2.5,  chord: [N.F3, N.A3, N.C4, N.F4] },
+
+                    // Dreamy Romantic Music-Box Arpeggio Bridge
+                    { mel: N.A4, dur: 1.0, chord: [N.A3, N.C4, N.E4] },
+                    { mel: N.C5, dur: 1.0, chord: null },
+                    { mel: N.G4, dur: 1.0, chord: [N.Bb3, N.D4, N.F4] },
+                    { mel: N.A4, dur: 1.0, chord: null },
+                    { mel: N.F4, dur: 2.0, chord: [N.F3, N.A3, N.C4] }
+                ];
+            }
+
+            initContext() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioCtx();
+                    this.masterGain = this.ctx.createGain();
+                    this.masterGain.gain.value = 0.28;
+                    this.masterGain.connect(this.ctx.destination);
+                }
+                if (this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+                // iOS Safari Hardware Audio Unlock: Play an inaudible 1-sample buffer on user gesture
+                try {
+                    const silentBuffer = this.ctx.createBuffer(1, 1, 22050);
+                    const source = this.ctx.createBufferSource();
+                    source.buffer = silentBuffer;
+                    source.connect(this.ctx.destination);
+                    if (source.start) source.start(0);
+                    else if (source.noteOn) source.noteOn(0);
+                } catch (e) {
+                    // Ignore if already unlocked
+                }
+            }
+
+            // Warm Music-Box / Felt Piano Voice
+            playBellNote(freq, durationSec) {
+                if (!this.ctx || !freq) return;
+                const now = this.ctx.currentTime;
+
+                // Fundamental sine + soft harmonic overtone
+                const osc1 = this.ctx.createOscillator();
+                const osc2 = this.ctx.createOscillator();
+                const noteGain = this.ctx.createGain();
+
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(freq, now);
+
+                osc2.type = 'triangle';
+                osc2.frequency.setValueAtTime(freq * 2, now); // Octave shimmer
+
+                const osc2Gain = this.ctx.createGain();
+                osc2Gain.gain.value = 0.14;
+
+                noteGain.gain.setValueAtTime(0.0001, now);
+                noteGain.gain.exponentialRampToValueAtTime(0.32, now + 0.03);
+                noteGain.gain.exponentialRampToValueAtTime(0.0008, now + durationSec + 1.1);
+
+                osc1.connect(noteGain);
+                osc2.connect(osc2Gain);
+                osc2Gain.connect(noteGain);
+                noteGain.connect(this.masterGain);
+
+                osc1.start(now);
+                osc2.start(now);
+                osc1.stop(now + durationSec + 1.2);
+                osc2.stop(now + durationSec + 1.2);
+            }
+
+            // Lush Ambient Pad Chord
+            playPadChord(freqs, durationSec) {
+                if (!this.ctx || !freqs) return;
+                const now = this.ctx.currentTime;
+
+                freqs.forEach(f => {
+                    const osc = this.ctx.createOscillator();
+                    const filter = this.ctx.createBiquadFilter();
+                    const padGain = this.ctx.createGain();
+
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(f, now);
+
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(650, now);
+
+                    padGain.gain.setValueAtTime(0.0001, now);
+                    padGain.gain.linearRampToValueAtTime(0.075, now + 0.45);
+                    padGain.gain.exponentialRampToValueAtTime(0.0008, now + durationSec + 1.8);
+
+                    osc.connect(filter);
+                    filter.connect(padGain);
+                    padGain.connect(this.masterGain);
+
+                    osc.start(now);
+                    osc.stop(now + durationSec + 1.9);
+                });
+            }
+
+            // Sparkle Chime SFX for Unlocks & Popups
+            playChimeSFX() {
+                this.initContext();
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, i) => {
+                    setTimeout(() => this.playBellNote(freq, 0.5), i * 85);
+                });
+            }
+
+            scheduleNext() {
+                if (!this.isPlaying) return;
+                const step = this.sequence[this.stepIndex];
+                const durSec = step.dur * this.beatSec;
+
+                if (step.mel) this.playBellNote(step.mel, durSec);
+                if (step.chord) this.playPadChord(step.chord, durSec * 2.2);
+
+                this.stepIndex = (this.stepIndex + 1) % this.sequence.length;
+                this.timerId = setTimeout(() => this.scheduleNext(), durSec * 1000);
+            }
+
+            start() {
+                this.initContext();
+                if (this.isPlaying) return;
+                this.isPlaying = true;
+                this.updateWidgetUI(true);
+                this.scheduleNext();
+            }
+
+            pause() {
+                this.isPlaying = false;
+                if (this.timerId) clearTimeout(this.timerId);
+                this.updateWidgetUI(false);
+            }
+
+            toggle() {
+                if (this.isPlaying) {
+                    this.pause();
+                } else {
+                    this.start();
+                }
+            }
+
+            updateWidgetUI(playing) {
+                const disc = document.getElementById('vinyl-disc');
+                const eq = document.getElementById('eq-visualizer');
+                const playIcon = document.getElementById('icon-play');
+                const pauseIcon = document.getElementById('icon-pause');
+                const statusText = document.getElementById('music-status-text');
+
+                if (playing) {
+                    disc.classList.add('vinyl-spinning');
+                    eq.classList.add('eq-active');
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                    statusText.textContent = 'Playing romantic melody...';
+                } else {
+                    disc.classList.remove('vinyl-spinning');
+                    eq.classList.remove('eq-active');
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                    statusText.textContent = 'Paused • Tap to play';
+                }
+            }
+        }
+
+        const musicEngine = new RomanticMusicEngine();
+
+        /**
+         * =========================================================================
+         * 2. STATE MANAGEMENT, CUSTOMIZATION & URL SHARING
+         * =========================================================================
+         */
+        const defaultContent = {
+            name: "My Sweet Love",
+            heading: "Happy Birthday, My Love!",
+            letter: "Today I think about how lucky I am to have you. You have such a kind, big heart, and you make every ordinary day better.",
+            sender: "Forever Yours ❤️",
+            photoThen: "https://i.postimg.cc/QxkJYc2M/IMG-20260622-WA0018.jpg",
+            photoNow: "https://i.postimg.cc/4NbQ2pDJ/IMG-20260402-061252-009.jpg"
+        };
+
+        const loveReasons = [
+            "Your smile instantly turns my hardest days into pure magic.",
+            "The way your eyes light up whenever you talk about things you love.",
+            "You make ordinary moments feel like my favorite memories.",
+            "Your kindness, warmth, and the gentle way you care for everyone.",
+            "Every laugh we share feels like the best song I've ever heard.",
+            "You inspire me to be a better person every single day.",
+            "Simply because loving you is the easiest thing I've ever done. ❤️"
+        ];
+
+        let currentContent = { ...defaultContent };
+        let currentReasonIndex = 0;
+        let typewriterTimer = null;
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast-banner');
+            toast.textContent = msg;
+            toast.classList.remove('opacity-0', 'translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-4');
+            }, 3000);
+        }
+
+        function loadContentFromURLorStorage() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                if (params.has('n') || params.has('h') || params.has('l')) {
+                    currentContent.name = params.get('n') || defaultContent.name;
+                    currentContent.heading = params.get('h') || defaultContent.heading;
+                    currentContent.letter = params.get('l') || defaultContent.letter;
+                    currentContent.sender = params.get('s') || defaultContent.sender;
+                    if (params.get('pt')) currentContent.photoThen = params.get('pt');
+                    if (params.get('pn')) currentContent.photoNow = params.get('pn');
+                } else {
+                    const saved = localStorage.getItem('romantic_en_card_v1');
+                    if (saved) currentContent = { ...defaultContent, ...JSON.parse(saved) };
+                }
+            } catch (e) {
+                console.warn("Could not parse saved data:", e);
+            }
+            syncContentToDOM();
+        }
+
+        function syncContentToDOM() {
+            document.getElementById('envelope-recipient-label').textContent = `For ${currentContent.name} ❤️`;
+            document.getElementById('card-recipient-badge').textContent = `To ${currentContent.name}`;
+            document.getElementById('card-main-heading').textContent = currentContent.heading;
+            document.getElementById('card-sender-sign').textContent = currentContent.sender;
+
+            const imgThen = document.getElementById('img-then');
+            const imgNow = document.getElementById('img-now');
+            if (imgThen && currentContent.photoThen) {
+                imgThen.src = currentContent.photoThen;
+            }
+            if (imgNow && currentContent.photoNow) {
+                imgNow.src = currentContent.photoNow;
+            }
+        }
+
+        // Smooth Typewriter Effect for the Love Letter
+        function startTypewriter(text) {
+            const el = document.getElementById('typewriter-text');
+            if (typewriterTimer) clearInterval(typewriterTimer);
+            el.textContent = '';
+            el.classList.add('typing-cursor');
+
+            let idx = 0;
+            typewriterTimer = setInterval(() => {
+                if (idx < text.length) {
+                    el.textContent += text.charAt(idx);
+                    idx++;
+                } else {
+                    clearInterval(typewriterTimer);
+                    el.classList.remove('typing-cursor');
+                }
+            }, 28);
+        }
+
+        /**
+         * =========================================================================
+         * 3. AMBIENT STARFIELD, CURSOR TRAIL & FIREWORKS CANVASES
+         * =========================================================================
+         */
+        const bgCanvas = document.getElementById('bg-canvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        const fxCanvas = document.getElementById('fx-canvas');
+        const fxCtx = fxCanvas.getContext('2d');
+
+        let stars = [];
+        let trailParticles = [];
+        let fireworkParticles = [];
+
+        function resizeCanvases() {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+            fxCanvas.width = window.innerWidth;
+            fxCanvas.height = window.innerHeight;
+        }
+
+        function initStarfield() {
+            stars = [];
+            const count = Math.min(80, Math.floor((window.innerWidth * window.innerHeight) / 14000));
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * bgCanvas.width,
+                    y: Math.random() * bgCanvas.height,
+                    r: Math.random() * 1.8 + 0.4,
+                    phase: Math.random() * Math.PI * 2,
+                    speed: Math.random() * 0.025 + 0.008,
+                    gold: Math.random() > 0.4
+                });
+            }
+        }
+
+        // Interactive Cursor / Touch Stardust & Mini-Heart Trail
+        function spawnTrail(x, y) {
+            for (let i = 0; i < 2; i++) {
+                trailParticles.push({
+                    x: x + (Math.random() - 0.5) * 8,
+                    y: y + (Math.random() - 0.5) * 8,
+                    vx: (Math.random() - 0.5) * 1.2,
+                    vy: -Math.random() * 1.4 - 0.3,
+                    size: Math.random() * 6 + 4,
+                    alpha: 0.9,
+                    isHeart: Math.random() > 0.45,
+                    color: Math.random() > 0.5 ? '#fb7185' : '#fcd34d'
+                });
+            }
+        }
+
+        window.addEventListener('mousemove', (e) => spawnTrail(e.clientX, e.clientY));
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                spawnTrail(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        // Celebration Fireworks & Heart Confetti Burst
+        function launchFireworksBurst(originX = fxCanvas.width / 2, originY = fxCanvas.height * 0.45) {
+            const colors = ['#fb7185', '#f43f5e', '#fcd34d', '#f59e0b', '#fbcfe8', '#ffffff'];
+            for (let i = 0; i < 95; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 9 + 3;
+                fireworkParticles.push({
+                    x: originX,
+                    y: originY,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - 2.5,
+                    gravity: 0.16,
+                    drag: 0.97,
+                    size: Math.random() * 11 + 6,
+                    alpha: 1,
+                    decay: Math.random() * 0.012 + 0.008,
+                    rot: Math.random() * 360,
+                    rotSpeed: (Math.random() - 0.5) * 10,
+                    isHeart: Math.random() > 0.35,
+                    color: colors[Math.floor(Math.random() * colors.length)]
+                });
+            }
+        }
+
+        function drawHeartShape(ctx, size) {
+            const s = size / 16;
+            ctx.scale(s, s);
+            ctx.beginPath();
+            ctx.moveTo(0, 5);
+            ctx.bezierCurveTo(0, 2, -5, -5, -10, -5);
+            ctx.bezierCurveTo(-18, -5, -18, 6, -18, 6);
+            ctx.bezierCurveTo(-18, 13, -10, 18, 0, 24);
+            ctx.bezierCurveTo(10, 18, 18, 13, 18, 6);
+            ctx.bezierCurveTo(18, 6, 18, -5, 10, -5);
+            ctx.bezierCurveTo(5, -5, 0, 2, 0, 5);
+            ctx.fill();
+        }
+
+        function renderCanvases() {
+            // 1. Background Stars & Cursor Trail
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            stars.forEach(s => {
+                s.phase += s.speed;
+                const alpha = 0.25 + Math.abs(Math.sin(s.phase)) * 0.7;
+                bgCtx.save();
+                bgCtx.globalAlpha = alpha;
+                bgCtx.fillStyle = s.gold ? '#fde68a' : '#fecdd3';
+                bgCtx.beginPath();
+                bgCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                bgCtx.fill();
+                bgCtx.restore();
+            });
+
+            for (let i = trailParticles.length - 1; i >= 0; i--) {
+                const p = trailParticles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= 0.025;
+                if (p.alpha <= 0) {
+                    trailParticles.splice(i, 1);
+                    continue;
+                }
+                bgCtx.save();
+                bgCtx.globalAlpha = p.alpha;
+                bgCtx.fillStyle = p.color;
+                bgCtx.translate(p.x, p.y);
+                if (p.isHeart) {
+                    drawHeartShape(bgCtx, p.size);
+                } else {
+                    bgCtx.beginPath();
+                    bgCtx.arc(0, 0, p.size * 0.25, 0, Math.PI * 2);
+                    bgCtx.fill();
+                }
+                bgCtx.restore();
+            }
+
+            // 2. Foreground Celebration Fireworks
+            fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+            for (let i = fireworkParticles.length - 1; i >= 0; i--) {
+                const fp = fireworkParticles[i];
+                fp.vx *= fp.drag;
+                fp.vy *= fp.drag;
+                fp.vy += fp.gravity;
+                fp.x += fp.vx;
+                fp.y += fp.vy;
+                fp.rot += fp.rotSpeed;
+                fp.alpha -= fp.decay;
+
+                if (fp.alpha <= 0) {
+                    fireworkParticles.splice(i, 1);
+                    continue;
+                }
+
+                fxCtx.save();
+                fxCtx.globalAlpha = fp.alpha;
+                fxCtx.translate(fp.x, fp.y);
+                fxCtx.rotate((fp.rot * Math.PI) / 180);
+                fxCtx.fillStyle = fp.color;
+                if (fp.isHeart) {
+                    drawHeartShape(fxCtx, fp.size);
+                } else {
+                    fxCtx.fillRect(-fp.size / 2, -fp.size / 4, fp.size, fp.size / 2);
+                }
+                fxCtx.restore();
+            }
+
+            requestAnimationFrame(renderCanvases);
+        }
+
+        /**
+         * =========================================================================
+         * 4. STAGE TRANSITIONS & INTERACTIVE FLOW
+         * =========================================================================
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            const stage1 = document.getElementById('stage-1-lock');
+            const stage2 = document.getElementById('stage-2-envelope');
+            const stage3 = document.getElementById('stage-3-card');
+
+            const heartBtn = document.getElementById('heart-lock-btn');
+            const unlockRing = document.getElementById('unlock-ring');
+            const ringCircumference = 339.29;
+
+            let holdProgress = 0;
+            let holdInterval = null;
+            let stage1Unlocked = false;
+
+            // Unlock Stage 1 -> Transition to Stage 2
+            function completeStage1Unlock() {
+                if (stage1Unlocked) return;
+                stage1Unlocked = true;
+                if (holdInterval) clearInterval(holdInterval);
+
+                unlockRing.style.strokeDashoffset = 0;
+                musicEngine.start(); // Start romantic background music seamlessly!
+                musicEngine.playChimeSFX();
+                launchFireworksBurst();
+
+                stage1.classList.add('opacity-0', 'scale-90', 'transition-all', 'duration-500');
+                setTimeout(() => {
+                    stage1.classList.add('hidden');
+                    stage2.classList.remove('hidden');
+                    stage2.classList.add('flex', 'animate-stage-enter');
+                }, 480);
+            }
+
+            // Support both Press-and-Hold AND Quick Tap for effortless mobile/desktop UX
+            function startHoldingHeart() {
+                if (stage1Unlocked) return;
+                musicEngine.initContext();
+                heartBtn.classList.remove('heart-beat-anim');
+                heartBtn.classList.add('heart-holding');
+
+                holdInterval = setInterval(() => {
+                    holdProgress += 5;
+                    const offset = ringCircumference - (holdProgress / 100) * ringCircumference;
+                    unlockRing.style.strokeDashoffset = Math.max(0, offset);
+                    if (holdProgress >= 100) {
+                        completeStage1Unlock();
+                    }
+                }, 25);
+            }
+
+            function stopHoldingHeart() {
+                if (stage1Unlocked) return;
+                if (holdInterval) clearInterval(holdInterval);
+                heartBtn.classList.remove('heart-holding');
+                heartBtn.classList.add('heart-beat-anim');
+
+                // If user tapped quickly (>10%), complete unlock smoothly so nobody gets stuck
+                if (holdProgress > 8) {
+                    completeStage1Unlock();
+                } else {
+                    holdProgress = 0;
+                    unlockRing.style.strokeDashoffset = ringCircumference;
+                }
+            }
+
+            heartBtn.addEventListener('mousedown', startHoldingHeart);
+            heartBtn.addEventListener('mouseup', stopHoldingHeart);
+            heartBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startHoldingHeart(); });
+            heartBtn.addEventListener('touchend', (e) => { e.preventDefault(); stopHoldingHeart(); });
+            heartBtn.addEventListener('click', completeStage1Unlock);
+
+            // Stage 2: Open 3D Wax-Sealed Envelope -> Transition to Stage 3
+            const envelopeBox = document.getElementById('envelope-box');
+            let envelopeOpened = false;
+
+            function openEnvelopeStage() {
+                if (envelopeOpened) return;
+                envelopeOpened = true;
+                envelopeBox.classList.add('opened');
+                musicEngine.playChimeSFX();
+
+                setTimeout(() => {
+                    stage2.classList.add('opacity-0', 'scale-95', 'transition-all', 'duration-500');
+                    setTimeout(() => {
+                        stage2.classList.add('hidden');
+                        stage2.classList.remove('flex');
+                        stage3.classList.remove('hidden');
+                        stage3.classList.add('animate-stage-enter');
+
+                        launchFireworksBurst();
+                        startTypewriter(currentContent.letter);
+                    }, 480);
+                }, 850);
+            }
+
+            envelopeBox.addEventListener('click', openEnvelopeStage);
+            envelopeBox.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openEnvelopeStage();
+                }
+            });
+
+            // Music Player Toggle Button
+            document.getElementById('music-toggle-btn').addEventListener('click', () => {
+                musicEngine.toggle();
+            });
+
+            // Replay Typewriter Letter
+            document.getElementById('retype-btn').addEventListener('click', () => {
+                startTypewriter(currentContent.letter);
+            });
+
+            // Polaroid "Then & Now" Flip & Fullscreen Lightbox Zoom Interactions
+            const polaroidThen = document.getElementById('polaroid-then');
+            const polaroidNow = document.getElementById('polaroid-now');
+            const photoLightbox = document.getElementById('photo-lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const closeLightboxBtn = document.getElementById('close-lightbox-btn');
+
+            function togglePolaroidFlip(cardEl) {
+                cardEl.classList.toggle('is-flipped');
+                musicEngine.playChimeSFX();
+            }
+
+            [polaroidThen, polaroidNow].forEach(card => {
+                if (!card) return;
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('.zoom-photo-btn') || e.target.closest('.pick-photo-btn')) return;
+                    togglePolaroidFlip(card);
+                });
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        togglePolaroidFlip(card);
+                    }
+                });
+            });
+
+            // Direct Gallery Image Selection & Compression (Works offline & on iPhone Safari)
+            function handleImageUpload(fileInput, targetKey) {
+                const file = fileInput.files && fileInput.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const tempImg = new Image();
+                    tempImg.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        // Keep ultra-sharp HD resolution (up to 1600px) so photos never lose clarity
+                        const maxDim = 1600;
+                        let w = tempImg.width;
+                        let h = tempImg.height;
+                        if (w > maxDim || h > maxDim) {
+                            if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+                            else { w = Math.round((w * maxDim) / h); h = maxDim; }
+                        }
+                        canvas.width = w;
+                        canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.imageSmoothingQuality = 'high';
+                        ctx.drawImage(tempImg, 0, 0, w, h);
+                        const highResData = canvas.toDataURL('image/jpeg', 0.96);
+
+                        currentContent[targetKey] = highResData;
+                        try {
+                            localStorage.setItem('romantic_en_card_v1', JSON.stringify(currentContent));
+                        } catch (err) {
+                            console.warn("Storage limit:", err);
+                        }
+                        syncContentToDOM();
+                        musicEngine.playChimeSFX();
+                        showToast('HD Photo added beautifully! 📸❤️');
+                    };
+                    tempImg.src = ev.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            document.querySelectorAll('.pick-photo-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const inputId = btn.getAttribute('data-upload-target');
+                    const inputEl = document.getElementById(inputId);
+                    if (inputEl) inputEl.click();
+                });
+            });
+
+            document.getElementById('upload-photo-then').addEventListener('change', function () {
+                handleImageUpload(this, 'photoThen');
+            });
+
+            document.getElementById('upload-photo-now').addEventListener('change', function () {
+                handleImageUpload(this, 'photoNow');
+            });
+
+            document.querySelectorAll('.zoom-photo-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const imgId = btn.getAttribute('data-zoom-img');
+                    const imgEl = document.getElementById(imgId);
+                    const caption = btn.getAttribute('data-zoom-caption');
+                    lightboxImg.src = imgEl ? imgEl.src : '';
+                    lightboxCaption.textContent = caption;
+                    photoLightbox.classList.remove('hidden');
+                    photoLightbox.classList.add('flex');
+                    musicEngine.playChimeSFX();
+                });
+            });
+
+            function closePhotoLightbox() {
+                photoLightbox.classList.add('hidden');
+                photoLightbox.classList.remove('flex');
+            }
+
+            closeLightboxBtn.addEventListener('click', closePhotoLightbox);
+            photoLightbox.addEventListener('click', (e) => {
+                if (e.target === photoLightbox) closePhotoLightbox();
+            });
+
+            // Interactive "Tap My Heart" -> Ba7ebek / Ba7ebek Awi Generator
+            const ba7ebekBtn = document.getElementById('ba7ebek-heart-btn');
+            const ba7ebekDisplay = document.getElementById('ba7ebek-phrase-display');
+            const ba7ebekPhrases = [
+                "Ba7ebek ❤️",
+                "Ba7ebek Awi 😍",
+                "Ba7ebek Mot 💖",
+                "Ba7ebek Gedan 🥰",
+                "Ya A7la 7aga Fe 7ayati ✨",
+                "Ba7ebek Aktar Men Ay 7aga 💞",
+                "Ya Ro7 Albi ❤️‍🔥",
+                "Ba7ebek Ya Habebty 👑"
+            ];
+            let ba7ebekIndex = 0;
+            let ba7ebekTaps = 0;
+
+            if (ba7ebekBtn) {
+                ba7ebekBtn.addEventListener('click', () => {
+                    ba7ebekTaps++;
+                    ba7ebekIndex = (ba7ebekIndex + 1) % ba7ebekPhrases.length;
+
+                    ba7ebekDisplay.classList.add('scale-75', 'opacity-40');
+                    musicEngine.playChimeSFX();
+
+                    setTimeout(() => {
+                        ba7ebekDisplay.textContent = ba7ebekPhrases[ba7ebekIndex];
+                        ba7ebekDisplay.classList.remove('scale-75', 'opacity-40');
+                    }, 120);
+
+                    const rect = ba7ebekBtn.getBoundingClientRect();
+                    spawnTrail(rect.left + rect.width / 2, rect.top + rect.height / 2);
+                    if (ba7ebekTaps % 3 === 0) {
+                        launchFireworksBurst(rect.left + rect.width / 2, rect.top);
+                    }
+                });
+            }
+
+            // Golden Scratch-Off "Why I Adore You" Cards Logic (Touch & Mouse)
+            function initScratchCards() {
+                document.querySelectorAll('.scratch-canvas').forEach(canvas => {
+                    const rect = canvas.parentElement.getBoundingClientRect();
+                    canvas.width = rect.width || 320;
+                    canvas.height = rect.height || 80;
+                    const ctx = canvas.getContext('2d');
+
+                    // Draw Metallic Gold Foil Layer
+                    const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                    grad.addColorStop(0, '#b48811');
+                    grad.addColorStop(0.35, '#f7e199');
+                    grad.addColorStop(0.65, '#d4af37');
+                    grad.addColorStop(1, '#9e730d');
+                    ctx.fillStyle = grad;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    // Label Text on Foil
+                    ctx.fillStyle = '#3b102b';
+                    ctx.font = 'bold 14px "Plus Jakarta Sans", sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(canvas.getAttribute('data-label') || 'Scratch Here ✨', canvas.width / 2, canvas.height / 2);
+
+                    let isScratching = false;
+                    let revealed = false;
+
+                    function scratchAt(clientX, clientY) {
+                        const bounds = canvas.getBoundingClientRect();
+                        const x = (clientX - bounds.left) * (canvas.width / bounds.width);
+                        const y = (clientY - bounds.top) * (canvas.height / bounds.height);
+
+                        ctx.globalCompositeOperation = 'destination-out';
+                        ctx.beginPath();
+                        ctx.arc(x, y, 22, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        if (!revealed) {
+                            // Check if >45% scratched to auto-reveal cleanly
+                            const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                            let transparent = 0;
+                            for (let i = 3; i < pixels.length; i += 16) {
+                                if (pixels[i] === 0) transparent++;
+                            }
+                            if (transparent / (pixels.length / 16) > 0.45) {
+                                revealed = true;
+                                canvas.style.transition = 'opacity 0.5s ease';
+                                canvas.style.opacity = '0';
+                                canvas.style.pointerEvents = 'none';
+                                musicEngine.playChimeSFX();
+                                launchFireworksBurst(bounds.left + bounds.width / 2, bounds.top);
+                            }
+                        }
+                    }
+
+                    canvas.addEventListener('mousedown', (e) => { isScratching = true; scratchAt(e.clientX, e.clientY); });
+                    canvas.addEventListener('mousemove', (e) => { if (isScratching) scratchAt(e.clientX, e.clientY); });
+                    window.addEventListener('mouseup', () => { isScratching = false; });
+
+                    canvas.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        isScratching = true;
+                        if (e.touches[0]) scratchAt(e.touches[0].clientX, e.touches[0].clientY);
+                    }, { passive: false });
+                    canvas.addEventListener('touchmove', (e) => {
+                        e.preventDefault();
+                        if (isScratching && e.touches[0]) scratchAt(e.touches[0].clientX, e.touches[0].clientY);
+                    }, { passive: false });
+                    canvas.addEventListener('touchend', () => { isScratching = false; });
+                });
+            }
+
+            // Re-init scratch canvases when Stage 3 becomes visible
+            const stage3Observer = new MutationObserver(() => {
+                if (!stage3.classList.contains('hidden')) {
+                    setTimeout(initScratchCards, 100);
+                    stage3Observer.disconnect();
+                }
+            });
+            stage3Observer.observe(stage3, { attributes: true, attributeFilter: ['class'] });
+
+            // Interactive Birthday Cake: Blow Out Candle & Make a Wish
+            const flameEl = document.getElementById('candle-flame');
+            const glowEl = document.getElementById('candle-glow');
+            const smokeEl = document.getElementById('candle-smoke');
+            const cakeArea = document.getElementById('cake-interactive-area');
+            const cakeHeading = document.getElementById('cake-heading');
+            let candleLit = true;
+
+            function toggleCandle() {
+                if (candleLit) {
+                    candleLit = false;
+                    flameEl.classList.add('hidden');
+                    if (glowEl) glowEl.classList.add('hidden');
+                    smokeEl.classList.remove('hidden');
+                    smokeEl.classList.add('smoke-puff');
+                    if (cakeHeading) {
+                        cakeHeading.classList.remove('hidden');
+                        cakeHeading.classList.add('flex');
+                    }
+
+                    musicEngine.playChimeSFX();
+                    launchFireworksBurst(fxCanvas.width * 0.5, fxCanvas.height * 0.4);
+                    setTimeout(() => launchFireworksBurst(fxCanvas.width * 0.25, fxCanvas.height * 0.35), 250);
+                    setTimeout(() => launchFireworksBurst(fxCanvas.width * 0.75, fxCanvas.height * 0.35), 450);
+                } else {
+                    candleLit = true;
+                    flameEl.classList.remove('hidden');
+                    if (glowEl) glowEl.classList.remove('hidden');
+                    smokeEl.classList.add('hidden');
+                    smokeEl.classList.remove('smoke-puff');
+                    if (cakeHeading) {
+                        cakeHeading.classList.add('hidden');
+                        cakeHeading.classList.remove('flex');
+                    }
+                }
+            }
+
+            cakeArea.addEventListener('click', toggleCandle);
+
+            // Creator Studio Modal Logic
+            const studioModal = document.getElementById('studio-modal');
+            const openStudioBtn = document.getElementById('open-studio-btn');
+            const closeStudioBtn = document.getElementById('close-studio-btn');
+            const studioForm = document.getElementById('studio-form');
+            const shareLinkBtn = document.getElementById('share-link-btn');
+
+            openStudioBtn.addEventListener('click', () => {
+                document.getElementById('edit-name').value = currentContent.name;
+                document.getElementById('edit-heading').value = currentContent.heading;
+                document.getElementById('edit-letter').value = currentContent.letter;
+                document.getElementById('edit-sender').value = currentContent.sender;
+                document.getElementById('edit-photo-then').value = currentContent.photoThen !== defaultContent.photoThen ? currentContent.photoThen : '';
+                document.getElementById('edit-photo-now').value = currentContent.photoNow !== defaultContent.photoNow ? currentContent.photoNow : '';
+
+                studioModal.classList.remove('hidden');
+                studioModal.classList.add('flex');
+            });
+
+            function closeStudio() {
+                studioModal.classList.add('hidden');
+                studioModal.classList.remove('flex');
+            }
+
+            closeStudioBtn.addEventListener('click', closeStudio);
+            studioModal.addEventListener('click', (e) => {
+                if (e.target === studioModal) closeStudio();
+            });
+
+            studioForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                currentContent.name = document.getElementById('edit-name').value.trim() || defaultContent.name;
+                currentContent.heading = document.getElementById('edit-heading').value.trim() || defaultContent.heading;
+                currentContent.letter = document.getElementById('edit-letter').value.trim() || defaultContent.letter;
+                currentContent.sender = document.getElementById('edit-sender').value.trim() || defaultContent.sender;
+                currentContent.photoThen = document.getElementById('edit-photo-then').value.trim() || defaultContent.photoThen;
+                currentContent.photoNow = document.getElementById('edit-photo-now').value.trim() || defaultContent.photoNow;
+
+                try {
+                    localStorage.setItem('romantic_en_card_v1', JSON.stringify(currentContent));
+                } catch (err) {
+                    console.warn("Storage unavailable:", err);
+                }
+
+                syncContentToDOM();
+                if (!stage3.classList.contains('hidden')) {
+                    startTypewriter(currentContent.letter);
+                }
+                closeStudio();
+                showToast('Customizations applied! ❤️');
+            });
+
+            shareLinkBtn.addEventListener('click', () => {
+                const url = new URL(window.location.href.split('?')[0]);
+                url.searchParams.set('n', document.getElementById('edit-name').value.trim() || currentContent.name);
+                url.searchParams.set('h', document.getElementById('edit-heading').value.trim() || currentContent.heading);
+                url.searchParams.set('l', document.getElementById('edit-letter').value.trim() || currentContent.letter);
+                url.searchParams.set('s', document.getElementById('edit-sender').value.trim() || currentContent.sender);
+                const ptVal = document.getElementById('edit-photo-then').value.trim();
+                const pnVal = document.getElementById('edit-photo-now').value.trim();
+                if (ptVal) url.searchParams.set('pt', ptVal);
+                if (pnVal) url.searchParams.set('pn', pnVal);
+
+                const shareText = url.toString();
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(shareText).then(() => {
+                        showToast('Shareable link copied! Send it to her 🔗❤️');
+                    }).catch(() => {
+                        fallbackCopyText(shareText);
+                    });
+                } else {
+                    fallbackCopyText(shareText);
+                }
+            });
+
+            function fallbackCopyText(text) {
+                const tempArea = document.createElement('textarea');
+                tempArea.value = text;
+                tempArea.setAttribute('readonly', '');
+                tempArea.style.position = 'fixed';
+                tempArea.style.opacity = '0';
+                document.body.appendChild(tempArea);
+                tempArea.select();
+                tempArea.setSelectionRange(0, 99999);
+                try {
+                    document.execCommand('copy');
+                    showToast('Shareable link copied! Send it to her 🔗❤️');
+                } catch (err) {
+                    showToast('Could not auto-copy link.');
+                }
+                document.body.removeChild(tempArea);
+            }
+        });
+
+        // Boot Canvases & Load Content on Window Load
+        window.onload = function () {
+            resizeCanvases();
+            initStarfield();
+            loadContentFromURLorStorage();
+            renderCanvases();
+        };
+
+        window.addEventListener('resize', () => {
+            resizeCanvases();
+            initStarfield();
+        });
+    </script>
+</body>
+</html>
